@@ -1,3 +1,6 @@
+// Third-party components & modules
+import { Container } from 'react-bootstrap'
+
 // Custom components & modules
 import LoginForm from './Components/Sections/LoginForm'
 
@@ -7,9 +10,15 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 const App = () => {
   return (
     <>
-      <div className="main-container">
+      <Container
+        fluid
+        className="min-vh-100 d-flex  flex-column align-items-center"
+      >
+        <h1 className="text-primary fw-bold mt-5 mb-5">
+          LAnG <span className="text-light bg-primary p-3">LEaRN</span>
+        </h1>
         <LoginForm />
-      </div>
+      </Container>
     </>
   )
 }

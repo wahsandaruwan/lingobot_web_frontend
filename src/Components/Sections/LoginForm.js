@@ -5,10 +5,10 @@ const LoginForm = () => {
   return (
     <>
       <Container>
-        <Row className="mt-5">
+        <Row>
           <Col
-            lg={5}
-            md={5}
+            lg={4}
+            md={8}
             sm={12}
             className="border border-2 p-5 m-auto rounded-lg"
           >
