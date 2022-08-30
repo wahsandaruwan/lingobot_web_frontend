@@ -1,9 +1,15 @@
-import './App.css'
+// Custom components & modules
+import LoginForm from './Components/Sections/LoginForm'
+
+// Third-party styling
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 const App = () => {
   return (
     <>
-      <h1>Hello</h1>
+      <div className="main-container">
+        <LoginForm />
+      </div>
     </>
   )
 }
