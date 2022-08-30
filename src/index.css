@@ -5,4 +5,10 @@
   box-sizing: border-box;
 }
 
-/* ----------Home page---------- */
+.back-image {
+  max-width: 400px;
+}
+
+.back-image > img {
+  width: 100%;
+}

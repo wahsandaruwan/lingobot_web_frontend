@@ -12,12 +12,7 @@ const CustomForm = () => {
     <>
       <Container>
         <Row>
-          <Col
-            lg={4}
-            md={8}
-            sm={12}
-            className="border border-2 p-5 m-auto rounded"
-          >
+          <Col className="border border-2 p-5 m-auto rounded">
             <h1 className="text-primary fs-2 mb-4">
               {formType ? 'Login...' : 'Register...'}
             </h1>
