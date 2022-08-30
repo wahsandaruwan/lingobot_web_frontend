@@ -2,7 +2,7 @@
 import { Container } from 'react-bootstrap'
 
 // Custom components & modules
-import LoginForm from './Components/Sections/LoginForm'
+import CustomForm from './Components/Sections/CustomForm'
 
 // Third-party styling
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -15,9 +15,9 @@ const App = () => {
         className="min-vh-100 d-flex  flex-column align-items-center"
       >
         <h1 className="text-primary fw-bold mt-5 mb-5">
-          LAnG <span className="text-light bg-primary p-3">LEaRN</span>
+          LAnG <span className="text-light bg-primary p-3 rounded">LEaRN</span>
         </h1>
-        <LoginForm />
+        <CustomForm />
       </Container>
     </>
   )
