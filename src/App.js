@@ -15,7 +15,8 @@ const App = () => {
         className="min-vh-100 d-flex  flex-column align-items-center"
       >
         <h1 className="text-primary fw-bold mt-5 mb-5">
-          LAnG <span className="text-light bg-primary p-3 rounded">LEaRN</span>
+          LAnG{' '}
+          <span className="text-light bg-primary py-2 px-3 rounded">LEaRN</span>
         </h1>
         <CustomForm />
       </Container>
