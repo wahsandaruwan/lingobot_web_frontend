@@ -5,11 +5,38 @@
   box-sizing: border-box;
 }
 
-/* ----------Home page image---------- */
+/* ----------Home page---------- */
+
+/* -----Background image----- */
 .back-image {
   max-width: 400px;
 }
 
 .back-image > img {
   width: 100%;
+}
+
+/* ----------Dashboard page---------- */
+
+/* -----Chat interface----- */
+
+/* Chat body */
+.chat-body {
+  max-height: 450px;
+}
+
+/* Avatar image */
+.avatar-image {
+  width: 45px;
+  height: 100%;
+}
+
+/* Send button */
+.btn-send {
+  width: 50px !important;
+}
+
+.btn-send > svg {
+  width: 100% !important;
+  height: 100% !important;
 }
