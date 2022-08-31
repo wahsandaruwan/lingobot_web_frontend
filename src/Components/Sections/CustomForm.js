@@ -2,7 +2,7 @@
 import { useState } from 'react'
 
 // Third-party components & modules
-import { Col, Container, Row, Form, Button } from 'react-bootstrap'
+import { Container, Row, Col, Form, Button } from 'react-bootstrap'
 
 const CustomForm = () => {
   // Form state
