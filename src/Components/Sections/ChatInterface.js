@@ -2,7 +2,7 @@
 import { Row, Col, Card, Button } from 'react-bootstrap'
 import { BsFillArrowRightSquareFill } from 'react-icons/bs'
 
-const ChatInterface = () => {
+const ChatInterface = ({ hideChat }) => {
   return (
     <>
       <Row className="my-3">
@@ -14,7 +14,7 @@ const ChatInterface = () => {
                 <Card.Text className="bg-warning text-dark px-3 py-2 mb-0 rounded fs6">
                   50
                 </Card.Text>
-                <Button variant="primary py-2 px-3">Go Back</Button>
+                <Button variant="primary py-2 px-3" onClick={hideChat}>Go Back</Button>
               </div>
             </Card.Header>
             <Card.Body className="chat-body overflow-auto">
@@ -56,11 +56,11 @@ const ChatInterface = () => {
             <Card.Footer className="d-flex px-3 py-4">
               <input
                 type="text"
-                class="form-control form-control-lg fs-6 py-3"
+                className="form-control form-control-lg fs-6 py-3"
                 id="exampleFormControlInput1"
                 placeholder="Type your message..."
               />
-              <a class="btn-send ms-3" href="#!">
+              <a className="btn-send ms-3" href="#!">
                 <BsFillArrowRightSquareFill />
               </a>
             </Card.Footer>

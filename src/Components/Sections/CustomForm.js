@@ -8,6 +8,26 @@ const CustomForm = () => {
   // Form state
   const [formType, setFormType] = useState(true)
 
+  // Login state
+  const [login, setLogin] = useState({
+    email: '',
+    password: ''
+  })
+
+  // Register state
+  const [register, setRegister] = useState({
+    fullName: '',
+    email: '',
+    password: ''
+  })
+
+  console.log(login)
+  console.log(register)
+
+  const loginHandler = () => {
+    console.log(login)
+  }
+
   return (
     <>
       <Container>
@@ -24,6 +44,7 @@ const CustomForm = () => {
                     className="p-2"
                     type="text"
                     placeholder="Full name"
+                    onChange={(e) => setRegister({ ...register, 'fullName': e.target.value })}
                   />
                 </Form.Group>
               ) : (
@@ -35,6 +56,7 @@ const CustomForm = () => {
                   className="p-2"
                   type="email"
                   placeholder="Enter email"
+                  onChange={(e) => formType ? setLogin({ ...login, 'email': e.target.value }) : setRegister({ ...register, 'email': e.target.value })}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -43,6 +65,7 @@ const CustomForm = () => {
                   className="p-2"
                   type="password"
                   placeholder="Password"
+                  onChange={(e) => formType ? setLogin({ ...login, 'password': e.target.value }) : setRegister({ ...register, 'password': e.target.value })}
                 />
               </Form.Group>
               <div className="d-grid gap-2">
