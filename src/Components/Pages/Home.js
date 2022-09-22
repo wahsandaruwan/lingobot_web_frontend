@@ -1,16 +1,10 @@
-// Inbuilt components & modules
-import { useState } from 'react'
-
 // Third-party components & modules
 import { Container, Row, Col } from 'react-bootstrap'
-import { useNavigate } from 'react-router-dom'
 
 // Custom components & modules
 import CustomForm from '../Sections/CustomForm'
 
 const Home = () => {
-  // Navigation instance
-  let navigate = useNavigate()
   return (
     <>
       <Container

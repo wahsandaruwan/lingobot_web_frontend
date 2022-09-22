@@ -3,6 +3,9 @@ import { useState } from 'react'
 
 // Third-party components & modules
 import { Container, Row, Col, Form, Button } from 'react-bootstrap'
+import axios from "axios"
+import { useNavigate } from 'react-router-dom'
+
 
 const CustomForm = () => {
   // Form state
@@ -21,11 +24,44 @@ const CustomForm = () => {
     password: ''
   })
 
-  console.log(login)
-  console.log(register)
+  // Error state
+  const [error, setError] = useState("")
 
-  const loginHandler = () => {
-    console.log(login)
+  // Navigation instance
+  let navigate = useNavigate()
+
+  // Function for handling login
+  const loginHandler = async () => {
+    const { email, password } = login
+
+    // Api call
+    try {
+      if (email === "") {
+        setError("Enter email!")
+      }
+      else if (password === "") {
+        setError("Enter password!")
+      }
+      else {
+        const { data } = await axios.post(
+          `http://localhost:3300/api/users/login`,
+          {
+            email: email,
+            password: password
+          },
+          {
+            headers: {
+              "Content-Type": "application/json"
+            }
+          })
+
+        if (data.auth) {
+          navigate('/dashboard')
+        }
+      }
+    } catch (err) {
+      setError(err.message)
+    }
   }
 
   return (
@@ -69,7 +105,7 @@ const CustomForm = () => {
                 />
               </Form.Group>
               <div className="d-grid gap-2">
-                <Button variant="primary p-2">
+                <Button variant="primary p-2" onClick={loginHandler}>
                   {formType ? 'Login' : 'Register'}
                 </Button>
                 <Button
