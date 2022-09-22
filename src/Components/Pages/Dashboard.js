@@ -26,7 +26,7 @@ const Dashboard = () => {
                 <Button variant="primary py-2 px-5">Logout</Button>
               </Card.Body>
               <Card.Footer className="text-muted">
-                Logged in as Kamal
+                Logged in as John
               </Card.Footer>
             </Card>
           </Col>
