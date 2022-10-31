@@ -1,68 +1,86 @@
 // Inbuilt components & modules
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 
 // Third-party components & modules
-import { Container, Row, Col, Form, Button } from 'react-bootstrap'
-import axios from "axios"
-import { useNavigate } from 'react-router-dom'
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
+// Custom components & modules
+import {
+  setUserToLocal,
+  getUserFromLocal,
+} from "../../helpers/LocalStorageHandling";
 
 const CustomForm = () => {
   // Form state
-  const [formType, setFormType] = useState(true)
+  const [formType, setFormType] = useState(true);
 
   // Login state
   const [login, setLogin] = useState({
-    email: '',
-    password: ''
-  })
+    email: "",
+    password: "",
+  });
 
   // Register state
   const [register, setRegister] = useState({
-    fullName: '',
-    email: '',
-    password: ''
-  })
+    fullName: "",
+    email: "",
+    password: "",
+  });
 
   // Error state
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
 
   // Navigation instance
-  let navigate = useNavigate()
+  let navigate = useNavigate();
+
+  // Redirect to dashboard if user logged in
+  useEffect(() => {
+    if (getUserFromLocal()?.authentication) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   // Function for handling login
   const loginHandler = async () => {
-    const { email, password } = login
+    const { email, password } = login;
 
     // Api call
     try {
       if (email === "") {
-        setError("Enter email!")
-      }
-      else if (password === "") {
-        setError("Enter password!")
-      }
-      else {
+        setError("Enter email!");
+      } else if (password === "") {
+        setError("Enter password!");
+      } else {
         const { data } = await axios.post(
-          `https://lang-learn-web-backend.onrender.com/api/users/login`,
+          `http://localhost:3300/api/users/login`,
           {
             email: email,
-            password: password
+            password: password,
           },
           {
             headers: {
-              "Content-Type": "application/json"
-            }
-          })
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-        if (data.auth) {
-          navigate('/dashboard')
+        if (data.authentication) {
+          setError("");
+          // Save login data in local storage and navigate to dashboard
+          setUserToLocal(data);
+          navigate("/dashboard");
+        } else {
+          throw Error(data.errors.message);
         }
       }
     } catch (err) {
-      setError(err.message)
+      console.log(err);
+      setSuccess("");
+      setError(err.message);
     }
-  }
+  };
 
   return (
     <>
@@ -70,7 +88,7 @@ const CustomForm = () => {
         <Row>
           <Col className="border border-2 p-5 m-auto rounded">
             <h1 className="text-primary fs-2 mb-4">
-              {formType ? 'Login...' : 'Register...'}
+              {formType ? "Login..." : "Register..."}
             </h1>
             <Form>
               {!formType ? (
@@ -80,11 +98,13 @@ const CustomForm = () => {
                     className="p-2"
                     type="text"
                     placeholder="Full name"
-                    onChange={(e) => setRegister({ ...register, 'fullName': e.target.value })}
+                    onChange={(e) =>
+                      setRegister({ ...register, fullName: e.target.value })
+                    }
                   />
                 </Form.Group>
               ) : (
-                ''
+                ""
               )}
               <Form.Group className="mb-3" controlId="formBasicEmail">
                 <Form.Label>Email address</Form.Label>
@@ -92,7 +112,11 @@ const CustomForm = () => {
                   className="p-2"
                   type="email"
                   placeholder="Enter email"
-                  onChange={(e) => formType ? setLogin({ ...login, 'email': e.target.value }) : setRegister({ ...register, 'email': e.target.value })}
+                  onChange={(e) =>
+                    formType
+                      ? setLogin({ ...login, email: e.target.value })
+                      : setRegister({ ...register, email: e.target.value })
+                  }
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -101,18 +125,22 @@ const CustomForm = () => {
                   className="p-2"
                   type="password"
                   placeholder="Password"
-                  onChange={(e) => formType ? setLogin({ ...login, 'password': e.target.value }) : setRegister({ ...register, 'password': e.target.value })}
+                  onChange={(e) =>
+                    formType
+                      ? setLogin({ ...login, password: e.target.value })
+                      : setRegister({ ...register, password: e.target.value })
+                  }
                 />
               </Form.Group>
               <div className="d-grid gap-2">
                 <Button variant="primary p-2" onClick={loginHandler}>
-                  {formType ? 'Login' : 'Register'}
+                  {formType ? "Login" : "Register"}
                 </Button>
                 <Button
                   variant="secondary p-2"
                   onClick={() => setFormType(!formType)}
                 >
-                  {!formType ? 'Login' : 'Register'}
+                  {!formType ? "Login" : "Register"}
                 </Button>
               </div>
             </Form>
@@ -120,7 +148,7 @@ const CustomForm = () => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default CustomForm
+export default CustomForm;

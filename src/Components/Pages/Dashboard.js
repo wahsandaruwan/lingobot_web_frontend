@@ -1,13 +1,27 @@
 // Inbuilt components & modules
-import { useState } from 'react'
+import { useState, useEffect } from "react";
 
 // Third-party components & modules
-import { Container, Row, Col, Card, Button } from 'react-bootstrap'
-import ChatInterface from '../Sections/ChatInterface'
+import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import ChatInterface from "../Sections/ChatInterface";
+import { useNavigate } from "react-router-dom";
+
+// Custom components & modules
+import { getUserFromLocal } from "../../helpers/LocalStorageHandling";
 
 const Dashboard = () => {
   // Chat display state
-  const [showChat, setShowChat] = useState(false)
+  const [showChat, setShowChat] = useState(false);
+
+  // Navigation instance
+  let navigate = useNavigate();
+
+  // Redirect to home if user not logged in
+  useEffect(() => {
+    if (!getUserFromLocal()?.authentication) {
+      navigate("/");
+    }
+  }, []);
 
   return (
     <>
@@ -31,8 +45,8 @@ const Dashboard = () => {
             </Card>
           </Col>
         </Row>
-        {
-          !showChat ? <Row className="my-3 gx-3 gy-3">
+        {!showChat ? (
+          <Row className="my-3 gx-3 gy-3">
             <Col lg={3} md={4} xs={12}>
               <Card className="text-center">
                 <Card.Img
@@ -42,7 +56,12 @@ const Dashboard = () => {
                 <Card.Body>
                   <Card.Title>English</Card.Title>
                   <Card.Text>Your Score : 50</Card.Text>
-                  <Button variant="primary py-2 px-5" onClick={() => setShowChat(true)}>Start Learning</Button>
+                  <Button
+                    variant="primary py-2 px-5"
+                    onClick={() => setShowChat(true)}
+                  >
+                    Start Learning
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -55,7 +74,12 @@ const Dashboard = () => {
                 <Card.Body>
                   <Card.Title>Spanish</Card.Title>
                   <Card.Text>Your Score : 60</Card.Text>
-                  <Button variant="primary py-2 px-5" onClick={() => setShowChat(true)}>Start Learning</Button>
+                  <Button
+                    variant="primary py-2 px-5"
+                    onClick={() => setShowChat(true)}
+                  >
+                    Start Learning
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -68,7 +92,12 @@ const Dashboard = () => {
                 <Card.Body>
                   <Card.Title>German</Card.Title>
                   <Card.Text>Your Score : 80</Card.Text>
-                  <Button variant="primary py-2 px-5" onClick={() => setShowChat(true)}>Start Learning</Button>
+                  <Button
+                    variant="primary py-2 px-5"
+                    onClick={() => setShowChat(true)}
+                  >
+                    Start Learning
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -81,7 +110,12 @@ const Dashboard = () => {
                 <Card.Body>
                   <Card.Title>French</Card.Title>
                   <Card.Text>Your Score : 30</Card.Text>
-                  <Button variant="primary py-2 px-5" onClick={() => setShowChat(true)}>Start Learning</Button>
+                  <Button
+                    variant="primary py-2 px-5"
+                    onClick={() => setShowChat(true)}
+                  >
+                    Start Learning
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -94,7 +128,12 @@ const Dashboard = () => {
                 <Card.Body>
                   <Card.Title>Russian</Card.Title>
                   <Card.Text>Your Score : 40</Card.Text>
-                  <Button variant="primary py-2 px-5" onClick={() => setShowChat(true)}>Start Learning</Button>
+                  <Button
+                    variant="primary py-2 px-5"
+                    onClick={() => setShowChat(true)}
+                  >
+                    Start Learning
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
@@ -107,16 +146,23 @@ const Dashboard = () => {
                 <Card.Body>
                   <Card.Title>Mandarin</Card.Title>
                   <Card.Text>Your Score : 50</Card.Text>
-                  <Button variant="primary py-2 px-5" onClick={() => setShowChat(true)}>Start Learning</Button>
+                  <Button
+                    variant="primary py-2 px-5"
+                    onClick={() => setShowChat(true)}
+                  >
+                    Start Learning
+                  </Button>
                 </Card.Body>
               </Card>
             </Col>
-          </Row> : <ChatInterface hideChat={() => setShowChat(false)} />
-        }
+          </Row>
+        ) : (
+          <ChatInterface hideChat={() => setShowChat(false)} />
+        )}
         {/* <ChatInterface /> */}
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
