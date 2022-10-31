@@ -1,8 +1,8 @@
 // Third-party components & modules
-import { Container, Row, Col } from 'react-bootstrap'
+import { Container, Row, Col } from "react-bootstrap";
 
 // Custom components & modules
-import CustomForm from '../Sections/CustomForm'
+import CustomForm from "../Sections/CustomForm";
 
 const Home = () => {
   return (
@@ -12,8 +12,8 @@ const Home = () => {
         className="min-vh-100 d-flex flex-column align-items-center"
       >
         <h1 className="text-primary fw-bold mt-5 mb-5">
-          LAnG{' '}
-          <span className="text-light bg-primary py-2 px-3 rounded">LEaRN</span>
+          Lingo{" "}
+          <span className="text-light bg-primary py-2 px-3 rounded">Bot</span>
         </h1>
         <Row className="w-auto">
           <Col
@@ -32,7 +32,7 @@ const Home = () => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
