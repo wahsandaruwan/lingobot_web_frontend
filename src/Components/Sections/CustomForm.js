@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 
 // Third-party components & modules
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Container, Row, Col, Form, Button, Card } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -31,6 +31,9 @@ const CustomForm = () => {
 
   // Error state
   const [error, setError] = useState("");
+
+  // Success state
+  const [success, setSuccess] = useState("");
 
   // Navigation instance
   let navigate = useNavigate();
@@ -91,6 +94,16 @@ const CustomForm = () => {
               {formType ? "Login..." : "Register..."}
             </h1>
             <Form>
+              {error && (
+                <Card className="mb-3 bg-danger text-light">
+                  <Card.Body>{error}</Card.Body>
+                </Card>
+              )}
+              {success && (
+                <Card className="mb-3 bg-success text-light">
+                  <Card.Body>{success}</Card.Body>
+                </Card>
+              )}
               {!formType ? (
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Full name</Form.Label>
