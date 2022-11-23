@@ -48,7 +48,6 @@ const CustomForm = () => {
   // Function for handling login
   const loginHandler = async () => {
     const { email, password } = login;
-
     // Api call
     try {
       if (email === "") {
@@ -71,6 +70,8 @@ const CustomForm = () => {
 
         if (data.authentication) {
           setError("");
+          // Clear local storage
+          localStorage.clear();
           // Save login data in local storage and navigate to dashboard
           setUserToLocal(data);
           navigate("/dashboard");
@@ -82,6 +83,43 @@ const CustomForm = () => {
       console.log(err);
       setSuccess("");
       setError(err.message);
+    }
+  };
+
+  // Function for handling registration
+  const registrationHandler = async () => {
+    console.log(register);
+    const { fullName, email, password } = register;
+    if (fullName === "") {
+      setError("Enter email!");
+    } else if (email === "") {
+      setError("Enter password!");
+    } else if (password === "") {
+      setError("Enter password!");
+    } else {
+      try {
+        // Api call
+        const { data } = await axios.post(
+          `http://localhost:3300/api/users/register`,
+          register,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (data.created) {
+          setError("");
+          setSuccess(data.success.message);
+        } else {
+          throw Error(data.errors.message);
+        }
+      } catch (err) {
+        console.log(err);
+        setSuccess("");
+        setError(err.message);
+      }
     }
   };
 
@@ -146,12 +184,20 @@ const CustomForm = () => {
                 />
               </Form.Group>
               <div className="d-grid gap-2">
-                <Button variant="primary p-2" onClick={loginHandler}>
+                <Button
+                  variant="primary p-2"
+                  onClick={formType ? loginHandler : registrationHandler}
+                >
                   {formType ? "Login" : "Register"}
                 </Button>
                 <Button
                   variant="secondary p-2"
-                  onClick={() => setFormType(!formType)}
+                  onClick={() => {
+                    setFormType(!formType);
+                    if (formType === false) {
+                      window.location.reload(true);
+                    }
+                  }}
                 >
                   {!formType ? "Login" : "Register"}
                 </Button>

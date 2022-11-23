@@ -23,6 +23,11 @@ const Dashboard = () => {
     }
   }, []);
 
+  const logoutHandler = () => {
+    localStorage.clear();
+    window.location.reload(true);
+  };
+
   return (
     <>
       <Container>
@@ -37,10 +42,12 @@ const Dashboard = () => {
                   You can select any language given below, and learn it by
                   chatting with our AI powered bot.
                 </Card.Text>
-                <Button variant="primary py-2 px-5">Logout</Button>
+                <Button variant="primary py-2 px-5" onClick={logoutHandler}>
+                  Logout
+                </Button>
               </Card.Body>
               <Card.Footer className="text-muted">
-                Logged in as John
+                Logged in as {getUserFromLocal().fullName}
               </Card.Footer>
             </Card>
           </Col>

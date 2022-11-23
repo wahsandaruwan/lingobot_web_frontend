@@ -7,15 +7,6 @@ const setUserToLocal = (data) => {
   }
 };
 
-// Function for set chat data to local storage
-const setChatDataToLocal = (data) => {
-  try {
-    localStorage.setItem("chatData", JSON.stringify(data));
-  } catch (err) {
-    return err;
-  }
-};
-
 // Function for get user from local storage
 const getUserFromLocal = () => {
   try {
@@ -38,12 +29,21 @@ const getUserFromLocal = () => {
   }
 };
 
+// Function for set chat data to local storage
+const setChatDataToLocal = (data) => {
+  try {
+    localStorage.setItem("chatData", JSON.stringify(data));
+  } catch (err) {
+    return err;
+  }
+};
+
 // Function for get chat data from local storage
 const getChatDataFromLocal = () => {
   try {
-    let todos = JSON.parse(localStorage.getItem("chatData"));
-    if (todos) {
-      return todos;
+    let data = JSON.parse(localStorage.getItem("chatData"));
+    if (data) {
+      return data;
     } else {
       return [];
     }
