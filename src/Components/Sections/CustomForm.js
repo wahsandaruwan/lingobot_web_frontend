@@ -52,6 +52,8 @@ const CustomForm = () => {
     try {
       if (email === "") {
         setError("Enter email!");
+      } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+        setError("Enter proper email!");
       } else if (password === "") {
         setError("Enter password!");
       } else {
@@ -94,6 +96,8 @@ const CustomForm = () => {
       setError("Enter email!");
     } else if (email === "") {
       setError("Enter password!");
+    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(email)) {
+      setError("Enter proper email!");
     } else if (password === "") {
       setError("Enter password!");
     } else {
