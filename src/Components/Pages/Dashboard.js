@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import ChatInterface from "../Sections/ChatInterface";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 // Custom components & modules
 import { getUserFromLocal } from "../../helpers/LocalStorageHandling";
@@ -19,16 +20,39 @@ const Dashboard = () => {
   // Navigation instance
   let navigate = useNavigate();
 
-  // Redirect to home if user not logged in
   useEffect(() => {
+    // Fetch all points
+    languagePointsHandler();
+    // Redirect to home if user not logged in
     if (!getUserFromLocal()?.authentication) {
       navigate("/");
     }
   }, []);
 
+  // Function for logout
   const logoutHandler = () => {
     localStorage.clear();
     window.location.reload(true);
+  };
+
+  // Function for get all points for user
+  const languagePointsHandler = async () => {
+    try {
+      // Api call
+      const { data } = await axios.get(
+        `http://localhost:3300/api/points/get/all/${getUserFromLocal()?.id}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${getUserFromLocal()?.token}`,
+          },
+        }
+      );
+
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
