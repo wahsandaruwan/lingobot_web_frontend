@@ -13,6 +13,9 @@ const Dashboard = () => {
   // Chat display state
   const [showChat, setShowChat] = useState(false);
 
+  // Language state
+  const [language, setLanguage] = useState("english");
+
   // Navigation instance
   let navigate = useNavigate();
 
@@ -36,7 +39,7 @@ const Dashboard = () => {
             <Card className="text-center">
               <Card.Body>
                 <Card.Title className="fw-bold" as="h3">
-                  Welcome to the Lang Learn Dashboard.
+                  Welcome to the Lingobot Dashboard.
                 </Card.Title>
                 <Card.Text>
                   You can select any language given below, and learn it by
@@ -65,7 +68,10 @@ const Dashboard = () => {
                   <Card.Text>Your Score : 50</Card.Text>
                   <Button
                     variant="primary py-2 px-5"
-                    onClick={() => setShowChat(true)}
+                    onClick={() => {
+                      setLanguage("English");
+                      setShowChat(true);
+                    }}
                   >
                     Start Learning
                   </Button>
@@ -83,7 +89,10 @@ const Dashboard = () => {
                   <Card.Text>Your Score : 60</Card.Text>
                   <Button
                     variant="primary py-2 px-5"
-                    onClick={() => setShowChat(true)}
+                    onClick={() => {
+                      setLanguage("Spanish");
+                      setShowChat(true);
+                    }}
                   >
                     Start Learning
                   </Button>
@@ -101,7 +110,10 @@ const Dashboard = () => {
                   <Card.Text>Your Score : 80</Card.Text>
                   <Button
                     variant="primary py-2 px-5"
-                    onClick={() => setShowChat(true)}
+                    onClick={() => {
+                      setLanguage("German");
+                      setShowChat(true);
+                    }}
                   >
                     Start Learning
                   </Button>
@@ -119,7 +131,10 @@ const Dashboard = () => {
                   <Card.Text>Your Score : 30</Card.Text>
                   <Button
                     variant="primary py-2 px-5"
-                    onClick={() => setShowChat(true)}
+                    onClick={() => {
+                      setLanguage("French");
+                      setShowChat(true);
+                    }}
                   >
                     Start Learning
                   </Button>
@@ -137,7 +152,10 @@ const Dashboard = () => {
                   <Card.Text>Your Score : 40</Card.Text>
                   <Button
                     variant="primary py-2 px-5"
-                    onClick={() => setShowChat(true)}
+                    onClick={() => {
+                      setLanguage("Russian");
+                      setShowChat(true);
+                    }}
                   >
                     Start Learning
                   </Button>
@@ -155,7 +173,10 @@ const Dashboard = () => {
                   <Card.Text>Your Score : 50</Card.Text>
                   <Button
                     variant="primary py-2 px-5"
-                    onClick={() => setShowChat(true)}
+                    onClick={() => {
+                      setLanguage("Mandarin");
+                      setShowChat(true);
+                    }}
                   >
                     Start Learning
                   </Button>
@@ -164,7 +185,10 @@ const Dashboard = () => {
             </Col>
           </Row>
         ) : (
-          <ChatInterface hideChat={() => setShowChat(false)} />
+          <ChatInterface
+            language={language}
+            hideChat={() => setShowChat(false)}
+          />
         )}
         {/* <ChatInterface /> */}
       </Container>
