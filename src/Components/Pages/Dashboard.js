@@ -40,7 +40,9 @@ const Dashboard = () => {
     try {
       // Api call
       const { data } = await axios.get(
-        `http://localhost:3300/api/points/get/all/${getUserFromLocal()?.id}`,
+        `https://lingobot-backend.onrender.com/api/points/get/all/${
+          getUserFromLocal()?.id
+        }`,
         {
           headers: {
             "Content-Type": "application/json",
