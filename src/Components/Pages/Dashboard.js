@@ -14,20 +14,40 @@ const Dashboard = () => {
   // Chat display state
   const [showChat, setShowChat] = useState(false);
 
-  // Language state
-  const [language, setLanguage] = useState("english");
+  // Points instances state
+  const [pointsInstances, setPointsInstances] = useState([]);
+
+  // Current anguage state
+  const [currentLanguage, setCurrentLanguage] = useState("english");
+
+  // Current points state
+  const [currentPoints, setCurrentPoints] = useState(0);
+
+  // Languages
+  const languages = [
+    "English",
+    "Spanish",
+    "German",
+    "French",
+    "Russian",
+    "Mandarin",
+  ];
 
   // Navigation instance
   let navigate = useNavigate();
 
   useEffect(() => {
-    // Fetch all points
-    languagePointsHandler();
     // Redirect to home if user not logged in
     if (!getUserFromLocal()?.authentication) {
       navigate("/");
     }
-  }, []);
+    // Fetch all points
+    languagePointsHandler();
+  }, [showChat]);
+
+  useEffect(() => {
+    startCreatingPointsInstances();
+  }, [pointsInstances]);
 
   // Function for logout
   const logoutHandler = () => {
@@ -35,25 +55,62 @@ const Dashboard = () => {
     window.location.reload(true);
   };
 
+  // Function for start creating points instances
+  const startCreatingPointsInstances = async () => {
+    if (pointsInstances.length === 0) {
+      console.log(pointsInstances);
+      // Create point instances for each language
+      languages.forEach(async (item) => {
+        await createPointInstances(getUserFromLocal()?.id, item);
+      });
+    }
+  };
+
   // Function for get all points for user
   const languagePointsHandler = async () => {
     try {
       // Api call
       const { data } = await axios.get(
-        `https://lingobot-backend.onrender.com/api/points/get/all/${
-          getUserFromLocal()?.id
-        }`,
+        `http://localhost:3300/api/points/all/get/${getUserFromLocal()?.id}`,
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getUserFromLocal()?.token}`,
           },
         }
       );
+      if (data.length > 0) {
+        setPointsInstances(data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
+  console.log(pointsInstances);
+
+  // Function for creating point instances for registered users
+  const createPointInstances = async (userId, language) => {
+    console.log(language);
+    try {
+      // Api call
+      const { data } = await axios.post(
+        `http://localhost:3300/api/points/create`,
+        {
+          userId,
+          language,
+          points: 0,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       console.log(data);
     } catch (err) {
       console.log(err);
+    } finally {
+      languagePointsHandler();
     }
   };
 
@@ -83,136 +140,70 @@ const Dashboard = () => {
         </Row>
         {!showChat ? (
           <Row className="my-3 gx-3 gy-3">
-            <Col lg={3} md={4} xs={12}>
-              <Card className="text-center">
-                <Card.Img
-                  variant="top w-50 m-auto"
-                  src="./assets/svgs/uk-flag.svg"
-                />
-                <Card.Body>
-                  <Card.Title>English</Card.Title>
-                  <Card.Text>Your Score : 50</Card.Text>
-                  <Button
-                    variant="primary py-2 px-5"
-                    onClick={() => {
-                      setLanguage("English");
-                      setShowChat(true);
-                    }}
-                  >
-                    Start Learning
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col lg={3} md={4} xs={12}>
-              <Card className="text-center">
-                <Card.Img
-                  variant="top w-50 m-auto"
-                  src="./assets/svgs/spain-flag.svg"
-                />
-                <Card.Body>
-                  <Card.Title>Spanish</Card.Title>
-                  <Card.Text>Your Score : 60</Card.Text>
-                  <Button
-                    variant="primary py-2 px-5"
-                    onClick={() => {
-                      setLanguage("Spanish");
-                      setShowChat(true);
-                    }}
-                  >
-                    Start Learning
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col lg={3} md={4} xs={12}>
-              <Card className="text-center">
-                <Card.Img
-                  variant="top w-50 m-auto"
-                  src="./assets/svgs/germany-flag.svg"
-                />
-                <Card.Body>
-                  <Card.Title>German</Card.Title>
-                  <Card.Text>Your Score : 80</Card.Text>
-                  <Button
-                    variant="primary py-2 px-5"
-                    onClick={() => {
-                      setLanguage("German");
-                      setShowChat(true);
-                    }}
-                  >
-                    Start Learning
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col lg={3} md={4} xs={12}>
-              <Card className="text-center">
-                <Card.Img
-                  variant="top w-50 m-auto"
-                  src="./assets/svgs/france-flag.svg"
-                />
-                <Card.Body>
-                  <Card.Title>French</Card.Title>
-                  <Card.Text>Your Score : 30</Card.Text>
-                  <Button
-                    variant="primary py-2 px-5"
-                    onClick={() => {
-                      setLanguage("French");
-                      setShowChat(true);
-                    }}
-                  >
-                    Start Learning
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col lg={3} md={4} xs={12}>
-              <Card className="text-center">
-                <Card.Img
-                  variant="top w-50 m-auto"
-                  src="./assets/svgs/russian-flag.svg"
-                />
-                <Card.Body>
-                  <Card.Title>Russian</Card.Title>
-                  <Card.Text>Your Score : 40</Card.Text>
-                  <Button
-                    variant="primary py-2 px-5"
-                    onClick={() => {
-                      setLanguage("Russian");
-                      setShowChat(true);
-                    }}
-                  >
-                    Start Learning
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col lg={3} md={4} xs={12}>
-              <Card className="text-center">
-                <Card.Img
-                  variant="top w-50 m-auto"
-                  src="./assets/svgs/china-flag.svg"
-                />
-                <Card.Body>
-                  <Card.Title>Mandarin</Card.Title>
-                  <Card.Text>Your Score : 50</Card.Text>
-                  <Button
-                    variant="primary py-2 px-5"
-                    onClick={() => {
-                      setLanguage("Mandarin");
-                      setShowChat(true);
-                    }}
-                  >
-                    Start Learning
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
+            {pointsInstances?.map((item, index) => {
+              const { language, points } = item;
+              return (
+                <Col lg={3} md={4} xs={12} key={index}>
+                  <Card className="text-center">
+                    {language === "English" ? (
+                      <Card.Img
+                        variant="top w-50 m-auto"
+                        src="./assets/svgs/uk-flag.svg"
+                      />
+                    ) : null}
+                    {language === "Spanish" ? (
+                      <Card.Img
+                        variant="top w-50 m-auto"
+                        src="./assets/svgs/spain-flag.svg"
+                      />
+                    ) : null}
+                    {language === "Russian" ? (
+                      <Card.Img
+                        variant="top w-50 m-auto"
+                        src="./assets/svgs/russian-flag.svg"
+                      />
+                    ) : null}
+                    {language === "German" ? (
+                      <Card.Img
+                        variant="top w-50 m-auto"
+                        src="./assets/svgs/germany-flag.svg"
+                      />
+                    ) : null}
+                    {language === "French" ? (
+                      <Card.Img
+                        variant="top w-50 m-auto"
+                        src="./assets/svgs/france-flag.svg"
+                      />
+                    ) : null}
+                    {language === "Mandarin" ? (
+                      <Card.Img
+                        variant="top w-50 m-auto"
+                        src="./assets/svgs/china-flag.svg"
+                      />
+                    ) : null}
+                    <Card.Body>
+                      <Card.Title>{language}</Card.Title>
+                      <Card.Text>Your Score : {points}</Card.Text>
+                      <Button
+                        variant="primary py-2 px-5"
+                        onClick={() => {
+                          setCurrentPoints(points);
+                          setCurrentLanguage(language);
+                          setShowChat(true);
+                        }}
+                      >
+                        Start Learning
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            })}
           </Row>
         ) : (
           <ChatInterface
-            language={language}
+            currentLanguage={currentLanguage}
+            currentPoints={currentPoints}
             hideChat={() => setShowChat(false)}
           />
         )}

@@ -13,9 +13,12 @@ import {
   getChatDataFromLocal,
 } from "../../helpers/LocalStorageHandling";
 
-const ChatInterface = ({ language, hideChat }) => {
+const ChatInterface = ({ currentLanguage, currentPoints, hideChat }) => {
   // Chat message state
   const [chatMessage, setChatMessage] = useState("");
+
+  // Chat points state
+  const [chatPoints, setChatPoints] = useState(currentPoints);
 
   // Chat data state
   const [chatData, setChatData] = useState(getChatDataFromLocal());
@@ -53,13 +56,12 @@ const ChatInterface = ({ language, hideChat }) => {
         {
           params: {
             dialog1: chatMessage,
-            language,
+            language: currentLanguage,
           },
         },
         {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${getUserFromLocal()?.token}`,
           },
         }
       );
@@ -69,26 +71,54 @@ const ChatInterface = ({ language, hideChat }) => {
       if (data.success) {
         setChatData([
           ...chatData,
-          { id: "patient", message: chatMessage, chatLanguage: language },
+          {
+            id: "patient",
+            message: chatMessage,
+            chatLanguage: currentLanguage,
+          },
           {
             id: "bot",
             message: data.dialog2,
-            chatLanguage: language,
+            chatLanguage: currentLanguage,
           },
         ]);
+        updatePointsHandler();
       } else {
         setChatData([
           ...chatData,
-          { id: "patient", message: chatMessage, chatLanguage: language },
+          {
+            id: "patient",
+            message: chatMessage,
+            chatLanguage: currentLanguage,
+          },
           {
             id: "bot",
             message: `Sorry something went wrong!.`,
-            chatLanguage: language,
+            chatLanguage: currentLanguage,
           },
         ]);
       }
 
       setChatMessage("");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // Function for updating points
+  const updatePointsHandler = async () => {
+    try {
+      const { data } = await axios.put(
+        `http://localhost:3300/api/points/update/${
+          getUserFromLocal()?.id
+        }/${currentLanguage}/${currentPoints + 10}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setChatPoints(data.updated.points);
     } catch (err) {
       console.log(err);
     }
@@ -100,10 +130,10 @@ const ChatInterface = ({ language, hideChat }) => {
         <Col>
           <Card>
             <Card.Header className="d-flex flex-row justify-content-between align-items-center p-3">
-              <Card.Title as="h5">Learn {language}</Card.Title>
+              <Card.Title as="h5">Learn {currentLanguage}</Card.Title>
               <div className="d-grid gap-2 d-flex">
                 <Card.Text className="bg-warning text-dark px-3 py-2 mb-0 rounded fs6">
-                  50
+                  {chatPoints}
                 </Card.Text>
                 <Button variant="primary py-2 px-3" onClick={hideChat}>
                   Go Back
@@ -117,7 +147,10 @@ const ChatInterface = ({ language, hideChat }) => {
                 </p>
               </div>
               {chatData?.map((item, index) => {
-                if (item.id === "bot" && item.chatLanguage === language) {
+                if (
+                  item.id === "bot" &&
+                  item.chatLanguage === currentLanguage
+                ) {
                   return (
                     <div
                       key={index}
@@ -137,7 +170,7 @@ const ChatInterface = ({ language, hideChat }) => {
                   );
                 } else if (
                   item.id === "patient" &&
-                  item.chatLanguage === language
+                  item.chatLanguage === currentLanguage
                 ) {
                   return (
                     <div

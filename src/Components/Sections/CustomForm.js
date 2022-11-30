@@ -58,7 +58,7 @@ const CustomForm = () => {
         setError("Enter password!");
       } else {
         const { data } = await axios.post(
-          `https://lingobot-backend.onrender.com/api/users/login`,
+          `http://localhost:3300/api/users/login`,
           {
             email: email,
             password: password,
@@ -104,7 +104,7 @@ const CustomForm = () => {
       try {
         // Api call
         const { data } = await axios.post(
-          `https://lingobot-backend.onrender.com/api/users/register`,
+          `http://localhost:3300/api/users/register`,
           register,
           {
             headers: {
