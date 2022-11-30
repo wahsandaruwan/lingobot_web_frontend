@@ -72,8 +72,9 @@ const CustomForm = () => {
 
         if (data.authentication) {
           setError("");
-          // Clear local storage
-          localStorage.clear();
+          // Clear login data from local storage
+          localStorage.removeItem("userLogin");
+
           // Save login data in local storage and navigate to dashboard
           setUserToLocal(data);
           navigate("/dashboard");

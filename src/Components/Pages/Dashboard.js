@@ -17,11 +17,14 @@ const Dashboard = () => {
   // Points instances state
   const [pointsInstances, setPointsInstances] = useState([]);
 
-  // Current anguage state
+  // Current language state
   const [currentLanguage, setCurrentLanguage] = useState("english");
 
   // Current points state
   const [currentPoints, setCurrentPoints] = useState(0);
+
+  // Current points id
+  const [pointsId, setPointsId] = useState("");
 
   // Languages
   const languages = [
@@ -47,23 +50,20 @@ const Dashboard = () => {
 
   useEffect(() => {
     startCreatingPointsInstances();
-  }, [pointsInstances]);
+  }, []);
 
   // Function for logout
   const logoutHandler = () => {
-    localStorage.clear();
+    localStorage.removeItem("userLogin");
     window.location.reload(true);
   };
 
   // Function for start creating points instances
-  const startCreatingPointsInstances = async () => {
-    if (pointsInstances.length === 0) {
-      console.log(pointsInstances);
-      // Create point instances for each language
-      languages.forEach(async (item) => {
-        await createPointInstances(getUserFromLocal()?.id, item);
-      });
-    }
+  const startCreatingPointsInstances = () => {
+    // Create point instances for each language
+    languages.forEach((item, index) => {
+      createPointInstances(getUserFromLocal()?.id, item);
+    });
   };
 
   // Function for get all points for user
@@ -79,21 +79,23 @@ const Dashboard = () => {
         }
       );
       if (data.length > 0) {
-        setPointsInstances(data);
+        console.log(data);
+        const unique = [
+          ...new Map(data.map((item) => [item["language"], item])).values(),
+        ];
+        console.log(unique);
+        setPointsInstances(unique);
       }
     } catch (err) {
       console.log(err);
     }
   };
 
-  console.log(pointsInstances);
-
   // Function for creating point instances for registered users
   const createPointInstances = async (userId, language) => {
-    console.log(language);
     try {
       // Api call
-      const { data } = await axios.post(
+      await axios.post(
         `http://localhost:3300/api/points/create`,
         {
           userId,
@@ -106,7 +108,6 @@ const Dashboard = () => {
           },
         }
       );
-      console.log(data);
     } catch (err) {
       console.log(err);
     } finally {
@@ -141,7 +142,7 @@ const Dashboard = () => {
         {!showChat ? (
           <Row className="my-3 gx-3 gy-3">
             {pointsInstances?.map((item, index) => {
-              const { language, points } = item;
+              const { _id, language, points } = item;
               return (
                 <Col lg={3} md={4} xs={12} key={index}>
                   <Card className="text-center">
@@ -190,6 +191,7 @@ const Dashboard = () => {
                           setCurrentPoints(points);
                           setCurrentLanguage(language);
                           setShowChat(true);
+                          setPointsId(_id);
                         }}
                       >
                         Start Learning
@@ -204,6 +206,7 @@ const Dashboard = () => {
           <ChatInterface
             currentLanguage={currentLanguage}
             currentPoints={currentPoints}
+            pointsId={pointsId}
             hideChat={() => setShowChat(false)}
           />
         )}
